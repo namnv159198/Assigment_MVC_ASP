@@ -1,0 +1,87 @@
+﻿@model IEnumerable<ASSIGMENT_MVC_ASP.Models.SanPham>
+
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" href="~/Content/StyleTable.css" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="Hero">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LoaiSanPham.TenLoaiSanPham)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TenSP)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.AnhSP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GiaSP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.XuatSu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChatLieu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GioiTinh)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoaiSanPham.TenLoaiSanPham)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenSP)
+            </td>
+
+            <td>
+                <img src="@item.AnhSP" width="200px" />
+            </td>
+            <td>
+                @item.GiaSP.ToString("#,##0").Replace(',', '.') VNĐ
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.XuatSu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChatLieu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GioiTinh)
+            </td>
+            <td>
+                <button type="button" class="btn btn-success">
+                    <a href="@Url.Action("Edit", "SanPhams", new {id = item.MaSP}) ">
+                        <i class="fa fa-edit" style="color: white"></i>
+                    </a>
+                </button>
+
+                <button type="button" class="btn btn-primary">
+                    <a href="@Url.Action("Details", "SanPhams", new {id = item.MaSP}) ">
+                        <i class="fa fa-eye" style="color: white"></i>
+                    </a>
+                </button>
+
+                <button type="button" class="btn btn-danger">
+                    <a href="@Url.Action("Delete", "SanPhams", new {id = item.MaSP}) " onclick="return confirm('Bạn có chắc muốn xóa sản phẩm ?')">
+                        <i class="fa fa-trash" style="color: white"></i>
+                    </a>
+                </button>
+            </td>
+        </tr>
+    }
+
+</table>
