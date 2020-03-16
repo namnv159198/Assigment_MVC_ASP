@@ -12,7 +12,7 @@ namespace ASSIGMENT_MVC_ASP.Models
         [Key]
         public int MaLoaiSanPham { get; set; }
 
-        [DisplayName("Loại sản phẩm")]
+        [DisplayName("Danh mục")]
         [StringLength(30, ErrorMessage = "Tên loại sản phẩm không được quá 30 ký tự")]
         [Required(ErrorMessage = "Tên loại sản phẩm bắt buộc phải có.")]
         public String TenLoaiSanPham { get; set; }

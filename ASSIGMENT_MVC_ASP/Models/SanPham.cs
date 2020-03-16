@@ -49,7 +49,9 @@ namespace ASSIGMENT_MVC_ASP.Models
         public EnumGioiTinh GioiTinh { get; set; }
         public enum EnumGioiTinh
         {
+            [Display(Name = "Bé trai")]
             Trai = 1,
+            [Display(Name = "Bé Gái")]
             Gai = 2
         }
         [ForeignKey("LoaiSanPham")]
@@ -57,7 +59,8 @@ namespace ASSIGMENT_MVC_ASP.Models
         [DisplayName("Phong cách")]
         public virtual LoaiSanPham LoaiSanPham { get; set; }
 
-       
+        public Dictionary<String, SanPham> DanhSachSanPhams { get; set; }
+
 
     }
 }
