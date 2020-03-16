@@ -13,8 +13,8 @@ namespace ASSIGMENT_MVC_ASP.Models
         [Key]
         public int MaSP { get; set; }
 
-        [DisplayName("Tên sản phâm")]
-        [StringLength(40,ErrorMessage = "Tên sản phẩm không được quá 40 ký tự")]
+        [DisplayName("Tên")]
+        [StringLength(100,ErrorMessage = "Tên sản phẩm không được quá 100 ký tự")]
         [Required(ErrorMessage = "Tên sản phẩm bắt buộc phải có.")]
         public String TenSP { get; set; }
 
@@ -23,12 +23,12 @@ namespace ASSIGMENT_MVC_ASP.Models
         public String MieuTa { get; set; }
 
 
-        [DisplayName("Ảnh sản phẩm")]
+        [DisplayName("Ảnh")]
         [Required(ErrorMessage = "Ảnh sản phẩm bắt buộc phải có.")]
         public String AnhSP { get; set; }
 
 
-        [DisplayName("Giá sản phẩm")]
+        [DisplayName("Giá")]
         [Required(ErrorMessage = "Giá sản phẩm bắt buộc phải có.")]
         [ Range(50000, 10000000, ErrorMessage = "Giá của một sản phẩm phải phù hợp, giá của bạn ảo quá ! xin hãy nhập lại !")] 
         public double GiaSP { get; set; }
@@ -54,6 +54,7 @@ namespace ASSIGMENT_MVC_ASP.Models
         }
         [ForeignKey("LoaiSanPham")]
         public int MaLoaiSanPham { get; set; }
+        [DisplayName("Phong cách")]
         public virtual LoaiSanPham LoaiSanPham { get; set; }
 
        

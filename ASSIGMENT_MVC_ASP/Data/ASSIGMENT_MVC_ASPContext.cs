@@ -19,8 +19,8 @@ namespace ASSIGMENT_MVC_ASP.Data
         {
         }
 
-        public System.Data.Entity.DbSet<ASSIGMENT_MVC_ASP.Models.LoaiSanPham> LoaiSanPhams { get; set; }
-
         public System.Data.Entity.DbSet<ASSIGMENT_MVC_ASP.Models.SanPham> SanPhams { get; set; }
+
+        public System.Data.Entity.DbSet<ASSIGMENT_MVC_ASP.Models.LoaiSanPham> LoaiSanPhams { get; set; }
     }
 }

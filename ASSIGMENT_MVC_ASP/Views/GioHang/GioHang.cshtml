@@ -1,0 +1,120 @@
+﻿@using System.Globalization
+@using Microsoft.Ajax.Utilities
+@model ASSIGMENT_MVC_ASP.Models.GioHang
+@{
+    ViewBag.Title = "Index";
+}
+
+<link rel="stylesheet" href="~/Content/StyleTable.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<h2>YOUR CART</h2>
+<div>
+    <button type="button" class="btn" style="background: #0275d8">
+        <a href="@Url.Action("Index", "SanPhams")" style="color: white;">
+            Back to list
+        </a>
+    </button>
+
+
+</div>
+<link rel="stylesheet" href="~/Content/StyleTable.css" />
+<table id="Hero">
+    <thead>
+        <tr>
+            <th>
+                Tên 
+            </th>
+            <th>
+                Loại sản phẩm
+            </th>
+            <th>
+                Ảnh
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Giá
+            <th>
+                Thành tiền
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+
+
+    @foreach (var item in Model.SanPhams.Values)
+    {
+
+        <tbody>
+            <tr class="text-center">
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenSP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoaiSanPham)
+                </td>
+                <td>
+                    <img src="@item.AnhSP" width="150px" />
+                </td>
+                <td>
+                    <form action="@Url.Action("CapNhatGioHang")" method="get">
+
+                        <input type="hidden" name="msp" value="@item.MaSP" />
+
+                        <input type="number" id="spinner" min="1" step="1" name="sl" value="@item.SoLuong" />
+
+
+                        <button type="submit" class="btn btn-primary btn-sm"> Cập nhật </button>
+                    </form>
+
+                </td>
+                <td>
+                    @item.GiaSP.ToString("#,##0").Replace(',', '.') VNĐ
+                </td>
+                <td>
+                    @item.ThanhTien.ToString("#,##0").Replace(',', '.') VNĐ
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-danger">
+                        <a href="@Url.Action("XoaSanPham", "GioHang", new {msp = item.MaSP}, null)" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?')">
+                            <i class="fa fa-trash" style="color: white"></i>
+                        </a>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    }
+    <tfoot>
+        <tr class="text-center">
+
+            <td style="border:white"></td>
+            <td style="border:white"></td>
+
+
+            <td class="bg-success">Quantity Total</td>
+            <td>@Model.TongSoLuongSanPham</td>
+            <td class="bg-success">Total</td>
+            <td>@Model.TongHoaDon.ToString("#,##0").Replace(',', '.') VNĐ</td>
+            <td>
+                <button type="button" class="btn btn-danger">
+                    <a href="@Url.Action("XaGioHang", "GioHang")" onclick="return confirm('Bạn có chắc muốn xóa toàn bộ sản phẩm ?')">
+                        <i class="fa" style="color: white">Remove All</i>
+                    </a>
+                </button>
+            </td>
+        </tr>
+    </tfoot>
+
+
+
+</table>
+
+
+
+
+
