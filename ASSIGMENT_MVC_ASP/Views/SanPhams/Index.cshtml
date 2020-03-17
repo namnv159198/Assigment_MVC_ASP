@@ -6,17 +6,103 @@
 
 <h2>Index</h2>
 <link rel="stylesheet" href="~/Content/StyleTable.css">
+<link rel="stylesheet" href="~/Content/DropdownTest.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 
-@using (Html.BeginForm("Index", "SanPhams", FormMethod.Get))
+
+
+@using (Ajax.BeginForm("TimKiemTheoTen", "SanPhams",
+    new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "searchFailed",
+        LoadingElementId = "ajax-loader",
+        UpdateTargetId = "Hero",
+    }))
 {
-<p>
-    Tìm kiếm : @Html.TextBox("TimKiem")   Danh mục: @Html.DropDownList("MaLoaiSanPham", "All") <input type="submit" value="Tìm kiếm" />
-</p>
+
+    <form class="example" style="margin:auto;max-width:300px">
+        <input type="text" name="keyword" placeholder="Tìm kiếm ..." />
+        <button type="submit" class="buttonSearch"><i class="fa fa-search"></i></button>
+    </form>
+
+    <img id="ajax-loader"
+         src="https://flevix.com/wp-content/uploads/2019/07/Ring-Loading.gif"
+         style="display: none; width: 100px;" />
 }
+@* @using (Ajax.BeginForm("TimKiemTheoDanhMuc", "SanPhams", *@
+@*     new AjaxOptions *@
+@*     { *@
+@*         InsertionMode = InsertionMode.Replace, *@
+@*         HttpMethod = "GET", *@
+@*         OnFailure = "searchFailed", *@
+@*         LoadingElementId = "ajax-loader", *@
+@*         UpdateTargetId = "Hero", *@
+@*     })) *@
+@* { *@
+@* *@
+
+@* *@
+@*      *@
+@* } *@
+@using (Ajax.BeginForm("TimKiemTheoDanhMuc", "SanPhams", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "GET",
+    OnFailure = "searchFailed",
+    LoadingElementId = "ajax-loader",
+    UpdateTargetId = "Hero",
+}))
+{
+    <div class="dropdown">
+        <button class="dropbtn">Tìm theo danh mục</button>
+        <div class="dropdown-content">
+            <button type="submit" name="MaLoaiSanPham" value="0">Tất cả</button>
+            <button type="submit" name="MaLoaiSanPham" value="1">Mặc nhà</button>
+        </div>
+    </div>
+}
+@using (Ajax.BeginForm("SapXepSanPham", "SanPhams", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "GET",
+    OnFailure = "searchFailed",
+    LoadingElementId = "ajax-loader",
+    UpdateTargetId = "Hero",
+}))
+{
+    <div class="dropdown">
+        <button class="dropbtn">Sắp xếp </button>
+        <div class="dropdown-content">
+            <button type="submit" name="sx" value="Giam">Giá giảm dần</button>
+            <button type="submit" name="sx" value="">Giá tăng dần</button>
+        </div>
+    </div>
+}
+@using (Ajax.BeginForm("TimTheoGioiTinh", "SanPhams", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "GET",
+    OnFailure = "searchFailed",
+    LoadingElementId = "ajax-loader",
+    UpdateTargetId = "Hero",
+}))
+{
+    <div class="dropdown">
+        <button class="dropbtn">Giới tính </button>
+        <div class="dropdown-content">
+            <button type="submit" name="GioiTinh" value="0">Tất cả</button>
+            <button type="submit" name="GioiTinh" value="1">Bé trai</button>
+            <button type="submit" name="GioiTinh" value="2">Bé gái</button>
+        </div>
+    </div>
+}
+
+
 <table id="Hero">
     <tr>
         <th>

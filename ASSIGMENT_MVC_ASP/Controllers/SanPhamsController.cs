@@ -8,19 +8,79 @@ using System.Web;
 using System.Web.Mvc;
 using ASSIGMENT_MVC_ASP.Data;
 using ASSIGMENT_MVC_ASP.Models;
+using ASSIGMENT_MVC_ASP.SanPhamService;
 
 namespace ASSIGMENT_MVC_ASP.Controllers
 {
     public class SanPhamsController : Controller
     {
         private ASSIGMENT_MVC_ASPContext db = new ASSIGMENT_MVC_ASPContext();
+        private static SanPhamServicecs sanPhamService = new SanPhamServicecs();
 
         // GET: SanPhams
-        public ActionResult Index(string TimKiem, int MaLoaiSanPham = 0)
+        public ActionResult Index()
         {
-            return View(DanhSachSanPham(TimKiem, MaLoaiSanPham));
+            var DanhMuc = from c in db.LoaiSanPhams select c;
+            ViewBag.MaLoaiSanPham = new SelectList(DanhMuc, "MaLoaiSanPham", "TenLoaiSanPham"); // danh sách Category
+            var sanPham = db.SanPhams.Include(s => s.LoaiSanPham);
+            return View(sanPham.ToList());
         }
 
+        public ActionResult ListProduct()
+        {
+            var sanPham = db.SanPhams.Include(s => s.LoaiSanPham);
+            return PartialView(sanPham.ToList());
+        }
+        public ActionResult TimKiemTheoTen(string keyword)
+        {
+            
+            var sanPham = db.SanPhams.Include(s => s.LoaiSanPham);
+            return PartialView("ListProduct", sanPham.Where(s=>s.TenSP.Contains(keyword)));
+        }
+        public ActionResult TimKiemTheoDanhMuc(int MaLoaiSanPham = 0)
+        {
+            var sanPham = db.SanPhams.Include(s => s.LoaiSanPham);
+
+            if (MaLoaiSanPham != 0)
+            {
+                sanPham = sanPham.Where(p => p.MaLoaiSanPham == MaLoaiSanPham);
+            }
+
+            return PartialView("ListProduct", sanPham);
+        }
+        public ActionResult SapXepSanPham(String sx)
+        {
+            var sanPham = db.SanPhams.Include(s => s.LoaiSanPham);
+            switch (sx)
+            {
+                // 3.1 Nếu biến sortOrder sắp giảm thì sắp giảm theo LinkName
+                case "Giam":
+                    sanPham = db.SanPhams.OrderByDescending(s => s.GiaSP);
+                    break;
+
+                // 3.2 Mặc định thì sẽ sắp tăng
+                default:
+                    sanPham = db.SanPhams.OrderBy(s => s.GiaSP);
+                    break;
+            }
+
+            return PartialView("ListProduct", sanPham);
+        }
+        public ActionResult TimTheoGioiTinh(int GioiTinh = 0)
+        {
+            var sanPham = db.SanPhams.Include(s => s.LoaiSanPham);
+
+            if (GioiTinh  == 1)
+            {
+                sanPham = sanPham.Where(p => p.GioiTinh == SanPham.EnumGioiTinh.Trai);
+            }
+            if (GioiTinh == 2)
+            {
+                sanPham = sanPham.Where(p => p.GioiTinh == SanPham.EnumGioiTinh.Gai);
+            }
+
+            return PartialView("ListProduct", sanPham);
+        }
 
         // GET: SanPhams/Details/5
         public ActionResult Details(int? id)
@@ -131,44 +191,7 @@ namespace ASSIGMENT_MVC_ASP.Controllers
             base.Dispose(disposing);
         }
 
-        private List<SanPham> DanhSachSanPham(String keyword, int MaLoaiSanPham = 0)
-        {
-
-            //1. Tạo danh sách danh mục để hiển thị ở giao diện View thông qua DropDownList
-            var danhmuc = from c in db.LoaiSanPhams select c;
-            ViewBag.MaLoaiSanPham = new SelectList(danhmuc, "MaLoaiSanPham", "TenLoaiSanPham"); // danh sách Category
-            var sanPhams = db.SanPhams.Include(s => s.LoaiSanPham);
-            sanPhams = from sanPham in db.SanPhams
-                join c in db.LoaiSanPhams on sanPham.MaLoaiSanPham equals c.MaLoaiSanPham
-                select sanPham;
-            
-            var DanhSachSanPhamTimKiem = new List<SanPham>();
-
-            if (!String.IsNullOrEmpty(keyword)) // kiểm tra chuỗi tìm kiếm có rỗng/null hay không
-            {
-                sanPhams = db.SanPhams.Where(s => s.TenSP.Contains(keyword)); //lọc theo chuỗi tìm kiếm
-            }
-            if (MaLoaiSanPham != 0)
-            {
-                sanPhams = db.SanPhams.Where(x => x.MaLoaiSanPham == MaLoaiSanPham);
-            }
-
-            foreach (var item in sanPhams)
-            {
-                SanPham temp = new SanPham();
-                temp.LoaiSanPham = item.LoaiSanPham;
-                temp.TenSP = item.TenSP;
-                temp.MieuTa = item.MieuTa;
-                temp.GioiTinh = item.GioiTinh;
-                temp.GiaSP = item.GiaSP;
-                temp.AnhSP = item.AnhSP;
-                temp.XuatSu = item.XuatSu;
-                temp.ChatLieu = item.ChatLieu;
-                DanhSachSanPhamTimKiem.Add(temp);
-            }
-
-            return DanhSachSanPhamTimKiem;
-        }
+       
         
     }
 }
